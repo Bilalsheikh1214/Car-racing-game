@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Turbo Rush — 2D Car Racing</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-shell">
+
+    <!-- Heads-up display -->
+    <header class="hud">
+      <div class="hud-item">
+        <span class="hud-label">SCORE</span>
+        <span id="score">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">SPEED</span>
+        <span><span id="speed">0</span> <small>km/h</small></span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">COINS</span>
+        <span id="coins">0</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">BEST</span>
+        <span id="highscore">0</span>
+      </div>
+      <button id="soundBtn" class="icon-btn" title="Toggle sound (M)">🔊</button>
+    </header>
+
+    <!-- Game stage -->
+    <div class="stage">
+      <canvas id="game" width="480" height="700"></canvas>
+
+      <!-- Nitro meter -->
+      <div class="boost-wrap">
+        <span class="boost-label">NITRO</span>
+        <div class="boost-track"><div id="boostFill" class="boost-fill"></div></div>
+      </div>
+
+      <!-- Start screen -->
+      <div id="startScreen" class="overlay">
+        <h1>TURBO<span>RUSH</span></h1>
+        <p class="tagline">Dodge traffic · Grab coins · Don't get wrecked</p>
+        <button id="startBtn" class="big-btn">START ENGINE</button>
+        <ul class="controls-list">
+          <li><b>◀ ▶ / A D</b> steer</li>
+          <li><b>▲ ▼ / W S</b> throttle &amp; brake</li>
+          <li><b>Space</b> nitro boost</li>
+          <li><b>P</b> pause &nbsp;·&nbsp; <b>M</b> mute</li>
+        </ul>
+        <p class="tip">💡 Squeeze past cars for <b>NEAR MISS</b> bonus points!</p>
+      </div>
+
+      <!-- Pause screen -->
+      <div id="pauseScreen" class="overlay hidden">
+        <h2>PAUSED</h2>
+        <button id="resumeBtn" class="big-btn">RESUME</button>
+        <p class="tip">Press <b>P</b> to continue</p>
+      </div>
+
+      <!-- Game over screen -->
+      <div id="overScreen" class="overlay hidden">
+        <h2 class="wrecked">WRECKED!</h2>
+        <p id="finalScore" class="final">0</p>
+        <p id="newBest" class="new-best hidden">🏆 NEW RECORD!</p>
+        <p class="stats" id="finalStats"></p>
+        <button id="restartBtn" class="big-btn">RACE AGAIN</button>
+        <p class="tip">Press <b>Enter</b> to restart</p>
+      </div>
+    </div>
+
+    <!-- Touch controls (mobile) -->
+    <div class="touch-controls">
+      <div class="touch-group">
+        <button class="touch-btn" data-key="left" aria-label="Steer left">◀</button>
+        <button class="touch-btn" data-key="right" aria-label="Steer right">▶</button>
+      </div>
+      <div class="touch-group">
+        <button class="touch-btn" data-key="brake" aria-label="Brake">▼</button>
+        <button class="touch-btn nitro" data-key="boost" aria-label="Nitro">⚡</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

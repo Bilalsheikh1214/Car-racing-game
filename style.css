@@ -1,0 +1,320 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0b1120 55%, #020617 100%);
+  color: #e2e8f0;
+  overflow: hidden;
+  user-select: none;
+}
+
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* ---------- HUD ---------- */
+.hud {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: min(480px, 94vw);
+}
+
+.hud-item {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  padding: 6px 4px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.hud-item small {
+  font-size: 0.6rem;
+  color: #94a3b8;
+}
+
+.hud-label {
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.icon-btn {
+  width: 44px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.icon-btn:hover {
+  background: #1e293b;
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* ---------- Stage & canvas ---------- */
+.stage {
+  position: relative;
+  line-height: 0;
+}
+
+canvas {
+  display: block;
+  width: auto;
+  height: min(700px, calc(100vh - 120px));
+  height: min(700px, calc(100dvh - 120px));
+  max-width: 94vw;
+  aspect-ratio: 480 / 700;
+  background: #000;
+  border-radius: 16px;
+  border: 2px solid rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 40px rgba(245, 158, 11, 0.15), 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Nitro meter ---------- */
+.boost-wrap {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.boost-label {
+  font-size: 0.58rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: #22d3ee;
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.8);
+}
+
+.boost-track {
+  width: 110px;
+  height: 10px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.boost-fill {
+  height: 100%;
+  width: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #06b6d4, #22d3ee, #a5f3fc);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.8);
+  transition: width 0.08s linear;
+}
+
+/* ---------- Overlays ---------- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+  line-height: 1.4;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.82);
+  backdrop-filter: blur(5px);
+  z-index: 5;
+}
+
+.overlay.hidden,
+.hidden {
+  display: none;
+}
+
+.overlay h1 {
+  font-size: 3.2rem;
+  letter-spacing: 4px;
+  font-style: italic;
+  color: #f8fafc;
+  text-shadow: 0 0 24px rgba(245, 158, 11, 0.7);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.overlay h1 span {
+  display: block;
+  background: linear-gradient(90deg, #f59e0b, #ef4444);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.overlay h2 {
+  font-size: 2.4rem;
+  letter-spacing: 6px;
+  color: #f8fafc;
+}
+
+.overlay h2.wrecked {
+  color: #ef4444;
+  text-shadow: 0 0 24px rgba(239, 68, 68, 0.8);
+  animation: shake 0.5s ease;
+}
+
+.tagline {
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.final {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #fbbf24;
+  font-variant-numeric: tabular-nums;
+}
+
+.stats {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.new-best {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #34d399;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.big-btn {
+  padding: 14px 34px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #111827;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+}
+
+.big-btn:hover {
+  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.6);
+  transform: translateY(-2px);
+}
+
+.big-btn:active {
+  transform: scale(0.96);
+}
+
+.controls-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.controls-list b {
+  color: #fbbf24;
+  background: rgba(148, 163, 184, 0.12);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.tip {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.tip b {
+  color: #fbbf24;
+}
+
+/* ---------- Touch controls ---------- */
+.touch-controls {
+  display: none;
+  width: min(480px, 94vw);
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.touch-group {
+  display: flex;
+  gap: 12px;
+}
+
+.touch-btn {
+  width: 74px;
+  height: 60px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 16px;
+  background: rgba(30, 41, 59, 0.9);
+  color: #e2e8f0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  touch-action: none;
+  transition: transform 0.05s ease, background 0.1s ease;
+}
+
+.touch-btn:active {
+  background: #334155;
+  transform: scale(0.93);
+}
+
+.touch-btn.nitro {
+  color: #22d3ee;
+  border-color: rgba(34, 211, 238, 0.5);
+}
+
+/* Show touch controls on touch devices / small screens */
+@media (pointer: coarse), (max-width: 700px) {
+  .touch-controls {
+    display: flex;
+  }
+}
+
+/* ---------- Animations ---------- */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.85; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
